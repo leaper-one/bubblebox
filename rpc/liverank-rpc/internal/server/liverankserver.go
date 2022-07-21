@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"bubblebox/rpc/liverank-rpc/internal/logic"
-	"bubblebox/rpc/liverank-rpc/internal/svc"
-	"bubblebox/rpc/liverank-rpc/types/liverank"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/internal/logic"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/internal/svc"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/types/liverank"
 )
 
 type LiverankServer struct {

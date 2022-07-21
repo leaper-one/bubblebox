@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 
-	"bubblebox/rpc/liverank-rpc/internal/svc"
-	"bubblebox/rpc/liverank-rpc/types/liverank"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/internal/svc"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/types/liverank"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

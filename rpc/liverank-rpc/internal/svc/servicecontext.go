@@ -1,6 +1,6 @@
 package svc
 
-import "bubblebox/rpc/liverank-rpc/internal/config"
+import "github.com/leaper-one/bubblebox/rpc/liverank-rpc/internal/config"
 
 type ServiceContext struct {
 	Config config.Config

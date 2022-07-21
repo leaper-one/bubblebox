@@ -6,7 +6,7 @@ package liverank
 import (
 	"context"
 
-	"bubblebox/rpc/liverank-rpc/types/liverank"
+	"github.com/leaper-one/bubblebox/rpc/liverank-rpc/types/liverank"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
