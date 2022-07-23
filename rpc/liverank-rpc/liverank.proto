@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package liverank;
+
+option go_package = "./liverank";
+
+service Liverank {
+    // 客户端提交排名
+    rpc SubmitRank(SubmitRankRequest) returns (SubmitRankResponse) {}
+    // 客户端获取排名
+    rpc GetRank(GetRankRequest) returns (GetRankResponse) {}
+    // 关注某个直播间的某个已有投稿的用户
+    rpc MarkConcern(MarkConcernRequest) returns (MarkConcernResponse) {}
+}
+
+message SubmitRankRequest {
+    // B站uid
+    int64 buid = 1;
+    // 房间号
+    int64 roomid = 2;
+    // 排名
+    int64 rank = 3;
+    // 礼物价值
+    int64 giftvalue = 4;
+    // 是否关注
+    bool isconcern = 5;
+}
+
+message SubmitRankResponse {
+    // 状态码
+    int32 code = 1;
+    // 返回信息
+    string message = 2;
+}
+
+message GetRankRequest {
+    // 时间戳
+    int64 timestamp = 1;
+    // 房间号
+    int64 roomid = 2;
+}
+
+// 排名列表
+message Rank {
+    // B站uid
+    int64 buid = 1;
+    // 排名
+    int64 rank = 2;
+}
+
+message GetRankResponse {
+    // 状态码
+    int32 code = 1;
+    // 返回信息
+    string message = 2;
+    // 时间戳
+    int64 timestamp = 3;
+    // 排名列表
+    repeated Rank ranks = 4;
+}
+
+message MarkConcernRequest {
+    // B站uid
+    int64 buid = 1;
+    // 房间号
+    int64 roomid = 2;
+    // 是否关注
+    bool isconcern = 3;
+}
+
+message MarkConcernResponse {
+    // 状态码
+    int32 code = 1;
+    // 返回信息
+    string message = 2;
+}
