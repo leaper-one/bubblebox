@@ -1,11 +1,14 @@
 package main
 
 import (
+	//"github.com/go-sql-driver/mysql"
+	"gorm.io/driver/sqlite"
 	"log"
 
 	"github.com/leaper-one/bubblebox/core/liverank"
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/sqlite"
+	//"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +18,17 @@ type DB struct {
 }
 
 func main() {
-	OpenDB("./liver.db")
+	//OpenDB("./liver.db")
+	OpenMysql("root:sexy0756@tcp(192.168.1.123:3306)/data?charset=utf8&parseTime=True&loc=Local")
+}
+
+func OpenMysql(dsn string) *DB {
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Panicln(err)
+	}
+	db.AutoMigrate(&liverrank.BiliRank{})
+	return &DB{write: db, read: db}
 }
 
 func OpenDB(path string) *DB {
