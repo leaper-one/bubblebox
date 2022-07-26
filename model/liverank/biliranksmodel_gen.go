@@ -27,6 +27,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*BiliRanks, error)
 		Update(ctx context.Context, data *BiliRanks) error
 		Delete(ctx context.Context, id int64) error
+		GetRank(ctx context.Context, roomId int64, timestamp int64) ([]*BiliRanks, error)
+		UpdateIsConcern(ctx context.Context, roomId int64, buid int64, isConcern int64) error
 	}
 
 	defaultBiliRanksModel struct {
@@ -70,6 +72,28 @@ func (m *defaultBiliRanksModel) FindOne(ctx context.Context, id int64) (*BiliRan
 	default:
 		return nil, err
 	}
+}
+
+// GetRank 获取排行榜
+func (m *defaultBiliRanksModel) GetRank(ctx context.Context, roomId int64, timestamp int64) ([]*BiliRanks, error) {
+	query := fmt.Sprintf("select %s from %s where `room_id` = ? and `timestamp` > ? and `is_concern` = 1", biliRanksRows, m.table)
+	var resp []*BiliRanks
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, roomId, timestamp)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+// UpdateIsConcern 更新是否关注
+func (m *defaultBiliRanksModel) UpdateIsConcern(ctx context.Context, roomId int64, buid int64, isConcern int64) error {
+	query := fmt.Sprintf("update %s set `is_concern` = ? where `room_id` = ? and `buid` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, isConcern, roomId, buid)
+	return err
 }
 
 func (m *defaultBiliRanksModel) Insert(ctx context.Context, data *BiliRanks) (sql.Result, error) {

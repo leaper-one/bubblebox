@@ -25,7 +25,16 @@ func NewMarkConcernLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MarkC
 
 //  关注某个直播间的某个已有投稿的用户
 func (l *MarkConcernLogic) MarkConcern(in *liverank.MarkConcernRequest) (*liverank.MarkConcernResponse, error) {
-	// todo: add your logic here and delete this line
 
-	return &liverank.MarkConcernResponse{}, nil
+	err := l.svcCtx.Model.UpdateIsConcern(context.Background(), in.Roomid, in.Buid, boolToInt64(in.Isconcern))
+
+	if err != nil {
+		logx.Info(err)
+		return &liverank.MarkConcernResponse{}, err
+	}
+
+	return &liverank.MarkConcernResponse{
+		Code:    200,
+		Message: "success",
+	}, nil
 }

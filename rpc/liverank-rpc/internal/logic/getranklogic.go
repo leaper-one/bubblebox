@@ -25,51 +25,35 @@ func NewGetRankLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetRankLo
 //  客户端获取排名
 func (l *GetRankLogic) GetRank(in *liverank.GetRankRequest) (*liverank.GetRankResponse, error) {
 
-	resp, err := l.svcCtx.Model.FindOne(context.Background(), in.Roomid)
+	resp, err := l.svcCtx.Model.GetRank(context.Background(), in.Roomid, in.Timestamp)
 
 	if err != nil {
-		logx.Info("Has err")
+		println("has err")
 		logx.Info(err)
-		return nil, err
+		return &liverank.GetRankResponse{}, err
 	}
 
-	logx.Info(resp)
+	var (
+		ranks     []*liverank.Rank
+		timeStamp = resp[0].Timestamp
+	)
 
-	return nil, err
+	for k, v := range resp {
+		ranks = append(ranks, &liverank.Rank{
+			Buid: resp[k].Buid,
+			Rank: resp[k].Rank,
+		})
 
-	//resp, err := l.svcCtx.Model.GetRank(context.Background(), 123, 0)
-	//
-	////logx.Info(
-	//
-	//if err != nil {
-	//	println("has err")
-	//	logx.Info(err)
-	//	return &liverank.GetRankResponse{}, err
-	//}
-	//
-	//var (
-	//	ranks     []*liverank.Rank
-	//	timeStamp int64 = resp[0].Timestamp
-	//)
-	//
-	//for k, v := range resp {
-	//	ranks[k].Buid = v.Buid
-	//	ranks[k].Rank = v.Rank
-	//
-	//	if v.Timestamp > timeStamp {
-	//		timeStamp = v.Timestamp
-	//	}
-	//}
-	//
-	//logx.Info(ranks)
-	//
-	//println("获取排名成功")
-	//return &liverank.GetRankResponse{
-	//	Code:      200,
-	//	Message:   "success",
-	//	Timestamp: timeStamp,
-	//	Ranks:     ranks,
-	//}, nil
+		if v.Timestamp > timeStamp {
+			timeStamp = v.Timestamp
+		}
+	}
 
-	//return &liverank.GetRankResponse{}, nil
+	return &liverank.GetRankResponse{
+		Code:      200,
+		Message:   "success",
+		Timestamp: timeStamp,
+		Ranks:     ranks,
+	}, nil
+
 }
