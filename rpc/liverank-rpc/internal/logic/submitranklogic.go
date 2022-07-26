@@ -27,9 +27,6 @@ func NewSubmitRankLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Submit
 
 //  客户端提交排名
 func (l *SubmitRankLogic) SubmitRank(in *liverank.SubmitRankRequest) (*liverank.SubmitRankResponse, error) {
-	// todo: add your logic here and delete this line
-
-	//logx.Info(l.ctx, "SubmitRankLogic.SubmitRank", "in", in)
 
 	_, err := l.svcCtx.Model.Insert(context.Background(), &liverankmodel.BiliRanks{
 		Timestamp: time.Now().Unix(),
@@ -41,11 +38,9 @@ func (l *SubmitRankLogic) SubmitRank(in *liverank.SubmitRankRequest) (*liverank.
 	})
 
 	if err != nil {
-		println("has err")
+		logx.Info(err)
 		return &liverank.SubmitRankResponse{}, err
 	}
-
-	println("提交排名成功")
 	return &liverank.SubmitRankResponse{
 		Code:    200,
 		Message: "success",

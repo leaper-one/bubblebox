@@ -28,7 +28,6 @@ func (l *GetRankLogic) GetRank(in *liverank.GetRankRequest) (*liverank.GetRankRe
 	resp, err := l.svcCtx.Model.GetRank(context.Background(), in.Roomid, in.Timestamp)
 
 	if err != nil {
-		println("has err")
 		logx.Info(err)
 		return &liverank.GetRankResponse{}, err
 	}

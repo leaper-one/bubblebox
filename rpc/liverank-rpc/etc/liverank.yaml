@@ -2,9 +2,9 @@ Name: liverank.rpc
 ListenOn: 127.0.0.1:8080
 Etcd:
   Hosts:
-  - api.2some.one:23790
+  - 127.0.0.1:2379
   Key: liverank.rpc
 
 # Mysql Conn Config
-DataSource: root:sexy0756@tcp(192.168.1.123:3306)/data
+DataSource: <{user}:{password}@tcp({database address})/{database name}>
 Table: liverank
